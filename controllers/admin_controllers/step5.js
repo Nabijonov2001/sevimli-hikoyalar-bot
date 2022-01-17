@@ -28,9 +28,8 @@ async function step5(bot, admin, message) {
                 if (message.audio) {
                     const { title, file_id } = message.audio
                     const category = next_step[1]
-                    const check_title = await audios.findOne({ where: {title: title } })
-                    const check_id = await audios.findOne({ where: {uniqueId: file_id } })
-                    if (!check_id && !check_title) {
+                    const check = await audios.findOne({ where: {title: title, category} })
+                    if (!check) {
                         const audio = await audios.create({
                             title: title,
                             uniqueId: file_id,
@@ -68,9 +67,8 @@ async function step5(bot, admin, message) {
                 if (message.video) {
                     const { file_name, file_id } = message.video
                     const category = next_step[1]
-                    const check_title = await videos.findOne({ where: {title: file_name } })
-                    const check_id = await videos.findOne({ where: {uniqueId: file_id } })
-                    if (!check_id && !check_title) {
+                    const check = await videos.findOne({ where: {title: file_name, category } })
+                    if (!check) {
                         const video = await videos.create({
                             title: file_name,
                             uniqueId: file_id,

@@ -1,5 +1,6 @@
 const { first_admin, second_admin } = require("../../config")
 const { chatper_category } = require("../../helpers/category_for_users")
+const audios = require("../../models/audioModel")
 const categories = require("../../models/categoriesModel")
 const comments = require("../../models/commentModel")
 const users = require("../../models/userModel")
@@ -38,21 +39,6 @@ async function step2(bot, user, message){
                 })
                 await user.update({step:'comment'}, {where:{user_id:userId}})
             }
-            if(message.reply_to_message && text =='/post'&&(userId ==first_admin ||userId ==second_admin)){
-                const all_users = await users.findAll()
-                let interval = 20/1000
-                all_users.forEach(user =>{
-                    try {
-                        setTimeout(async()=>{
-                            await bot.copyMessage(user.user_id, message.from.id, message.reply_to_message.message_id, {
-                                reply_markup:message.reply_to_message.reply_markup
-                            })
-                        }, interval)
-                    } catch (error) {
-                        console.log(error)
-                    }
-                })
-            }
         }
         if(user.step =='comment'){
             if(text == '🔙 Ortga'){
@@ -66,7 +52,8 @@ async function step2(bot, user, message){
                     }
                 })
                 await user.update({step:'2'}, {where:{user_id:userId}})
-            }else if(text!='/start' && text!='/type'&& text!='💬 Izohlar'){
+            }
+            else if(text!='/start' && text!='/type'&& text!='💬 Izohlar'){
                 await comments.create({name:message.from.first_name, text:text})
                 await bot.sendMessage(userId, 'Firklaringiz uchun rahmat!',{
                     reply_markup: {
