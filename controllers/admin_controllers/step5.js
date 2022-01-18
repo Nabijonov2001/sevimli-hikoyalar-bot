@@ -65,6 +65,7 @@ async function step5(bot, admin, message) {
                     await admins.update({ step: `4#${next_step[1]}` }, { where: { admin_id: userId } })
                 }
                 if (message.video) {
+                    console.log(message.video)
                     const { file_name, file_id } = message.video
                     const category = next_step[1]
                     const check = await videos.findOne({ where: {title: file_name, category } })

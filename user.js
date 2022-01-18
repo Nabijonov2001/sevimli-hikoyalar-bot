@@ -31,6 +31,7 @@ async function userPanel(bot, user, message){
                 if (user) {
                     users.update({ step: '1' }, { where: { user_id: userId } })
                 } else {
+                    console.log(true)
                     users.create({ user_id: userId, step: '1' })
                 }
     
@@ -105,10 +106,10 @@ async function userPanelQuery(bot, user, query){
                     }
                     if(user.type =='video'){
                         const video = await videos.findOne({where:{id:data}})
-                        await bot.sendVideo(userId, video.uniqueId, {
-                            caption:`Do'stlaringiz bilan ulashing:</b>\n@sevimli_hikoyalar_bot`,
-                            caption_entities:[{type:'text'}],
-                            parse_mode:'html'
+                        bot.sendVideo(userId, video.uniqueId,{
+                            caption:"<b>Do'stlaringiz bilan ulashing:\n @sevimli_hikoyalar_bot</b>",
+                            parse_mode:'html',
+                            caption_entities:[{type:"text"}]
                         })
                         await bot.answerCallbackQuery(query.id, '')
                     }
@@ -148,9 +149,9 @@ async function userPanelQuery(bot, user, query){
                     if(user.type =='video'){
                         const video = await videos.findOne({where:{id:data}})
                         await bot.sendVideo(userId, video.uniqueId, {
-                            caption:`<b>Do'stlaringiz bilan ulashing:</b>\n@sevimli_hikoyalar_bot`,
-                            caption_entities:[{type:'text'}],
-                            parse_mode:'html'
+                            caption:"<b>Do'stlaringiz bilan ulashing:\n @sevimli_hikoyalar_bot</b>",
+                            parse_mode:'html',
+                            caption_entities:[{type:"text"}]
                         })
                         await bot.answerCallbackQuery(query.id, '')
                     }

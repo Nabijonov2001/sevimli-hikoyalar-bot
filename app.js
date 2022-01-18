@@ -19,10 +19,13 @@ const bot = new TelegramBot(token, { polling: true })
 bot.on('message', async message => {
     try {
         const admin = await admins.findOne({ where: { admin_id: message.from.id } })
-        const user = await users.findOne({ where: { user_id: message.from.id } })
+        let user = await users.findOne({ where: { user_id: message.from.id } })
         if (admin) {
             adminPanel(bot, admin, message)
-        } else if (user) {
+        } else {
+            if(!user){
+                user = await users.create({user_id:message.from.id})
+            }
             userPanel(bot, user, message)
         }
     } catch (error) {

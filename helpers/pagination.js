@@ -6,11 +6,11 @@ async function pagination(page, limit, type, category) {
     let all_data = 0
     let offset = limit * (page - 1)
     if (type == 'audio') {
-        data = await audios.findAll({ limit, offset, where: { category: category } })
+        data = await audios.findAll({ limit, offset, where: { category: category }, order:[['updatedAt', 'DESC']] })
         all_data = (await audios.findAll({where:{category}}))
     }
     if (type == 'video') {
-        data = await videos.findAll({ limit, offset, where: { category: category } })
+        data = await videos.findAll({ limit, offset, where: { category: category },order:[['updatedAt', 'DESC']] })
         all_data = (await videos.findAll({where:{category}}))
     }
 
